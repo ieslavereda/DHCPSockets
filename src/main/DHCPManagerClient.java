@@ -1,4 +1,4 @@
-package common;
+package main;
 
 import java.awt.EventQueue;
 
