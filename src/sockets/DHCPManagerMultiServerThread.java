@@ -42,8 +42,10 @@ public class DHCPManagerMultiServerThread extends Thread {
 				if (mensajeAEnviar.getTipoMensaje() == Mensaje.ACEPTAR_CIERRE)
 					break;
 			}
+			instante = LocalDateTime.now().format(dtf);
+			System.out.println(instante + " -> Cerrando conexion para la ip " + socket.getRemoteSocketAddress());
 			socket.close();
-		} catch (IOException e) {
+		} catch (IOException | ClassNotFoundException e) {
 			e.printStackTrace();
 		}
 	}
