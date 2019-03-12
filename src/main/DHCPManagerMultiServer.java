@@ -9,6 +9,9 @@ package main;
  *
  */
 import java.io.*;
+import java.net.ServerSocket;
+
+import sockets.DHCPManagerMultiServerThread;
 
 public class DHCPManagerMultiServer {
 
@@ -17,11 +20,11 @@ public class DHCPManagerMultiServer {
 	public static void main(String[] args) throws IOException {
 
 		int portNumber = 1977;
-		boolean listening = true;
+		
 		System.out.println("Socket iniciado en el puerto " + portNumber);
 
 		try (ServerSocket serverSocket = new ServerSocket(portNumber)) {
-			while (listening) {
+			while (true) {
 				new DHCPManagerMultiServerThread(serverSocket.accept()).start();
 				System.out.println("Conexiones iniciada nº: " + (++conexionesActivas));
 			}

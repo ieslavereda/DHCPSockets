@@ -9,6 +9,11 @@ package sockets;
  *
  */
 import java.net.*;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
+
+import common.Mensaje;
+
 import java.io.*;
 
 public class DHCPManagerMultiServerThread extends Thread{
@@ -22,19 +27,20 @@ public class DHCPManagerMultiServerThread extends Thread{
 
 	public void run() {
 		
-		
+		DateTimeFormatter dtf = DateTimeFormatter.ofPattern("dd-MMM-uuuu H:m:s");
+		String instante = LocalDateTime.now().format(dtf);
+		System.out.println(instante + " -> Conexion realizada desde la IP " +socket.getRemoteSocketAddress());
 
-		try (PrintWriter out = new PrintWriter(socket.getOutputStream(), true);
-				BufferedReader in = new BufferedReader(new InputStreamReader(socket.getInputStream()));) {
-			String inputLine, outputLine;
-//			KnockKnockProtocol kkp = new KnockKnockProtocol();
-			outputLine = kkp.processInput(null);
-			out.println(outputLine);
+		try (ObjectOutputStream out = new ObjectOutputStream(socket.getOutputStream());
+				ObjectInputStream in = new ObjectInputStream(socket.getInputStream());) {
+			Mensaje mensajeRecibido,mensajeAEnviar;
+			GestionMensajes gm = new GestionMensajes();
 
-			while ((inputLine = in.readLine()) != null) {
-				outputLine = kkp.processInput(inputLine);
-				out.println(outputLine);
-				if (outputLine.equals("Bye"))
+			while ((mensajeRecibido = (Mensaje)in.readObject()) != null) {
+				mensajeAEnviar = gm.procesarMensaje(mensajeRecibido);
+				out.writeObject(mensajeAEnviar);
+				if (mensajeAEnviar.getTipoMensaje()==Mensaje.SOLICITAR_CIERRE ||
+						mensajeAEnviar.getTipoMensaje()==Mensaje.ACEPTAR_CIERRE)
 					break;
 			}
 			socket.close();
