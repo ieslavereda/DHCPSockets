@@ -19,7 +19,7 @@ public class DHCPManagerMultiServer {
 
 	public static void main(String[] args) throws IOException {
 
-		int portNumber = 1977;
+		int portNumber = 2000;
 		
 		System.out.println("Socket iniciado en el puerto " + portNumber);
 

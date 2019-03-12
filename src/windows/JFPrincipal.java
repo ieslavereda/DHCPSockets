@@ -11,8 +11,11 @@ import javax.swing.table.DefaultTableModel;
 import org.apache.commons.net.util.SubnetUtils;
 import common.Host;
 import common.Lista;
+import common.Mensaje;
 import common.Nodo;
 import common.Red;
+import sockets.DHCPSocketClient;
+
 import javax.swing.JMenuBar;
 import javax.swing.JMenu;
 import javax.swing.JMenuItem;
@@ -71,6 +74,7 @@ public class JFPrincipal extends JFrame {
 	private JMenu mnHelp;
 	private JLabel lblHost;
 	private JFPrincipal framePrincipal;
+	private JTextPane textPaneServidor;
 	
 
 	/**
@@ -155,6 +159,50 @@ public class JFPrincipal extends JFrame {
 
 		JTabbedPane tabbedPane = new JTabbedPane(JTabbedPane.TOP);
 		contentPane.add(tabbedPane, BorderLayout.CENTER);
+		
+		JPanel panelServidor = new JPanel();
+		tabbedPane.addTab("Servidor", null, panelServidor, null);
+		
+		JPanel panel_6 = new JPanel();
+		
+		JButton btnConectar = new JButton("Conectar");
+		btnConectar.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
+				
+				try {
+					Mensaje mensaje = DHCPSocketClient.connect("10.0.3.1",2000,new Mensaje("Prueba",Mensaje.SOLICITAR_CIERRE));
+					textPaneServidor.setText(mensaje.getResumen());
+				} catch (IOException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+				
+			}
+		});
+		GroupLayout gl_panelServidor = new GroupLayout(panelServidor);
+		gl_panelServidor.setHorizontalGroup(
+			gl_panelServidor.createParallelGroup(Alignment.LEADING)
+				.addGroup(gl_panelServidor.createSequentialGroup()
+					.addContainerGap()
+					.addGroup(gl_panelServidor.createParallelGroup(Alignment.LEADING)
+						.addComponent(panel_6, GroupLayout.DEFAULT_SIZE, 867, Short.MAX_VALUE)
+						.addComponent(btnConectar, Alignment.TRAILING))
+					.addContainerGap())
+		);
+		gl_panelServidor.setVerticalGroup(
+			gl_panelServidor.createParallelGroup(Alignment.LEADING)
+				.addGroup(gl_panelServidor.createSequentialGroup()
+					.addContainerGap()
+					.addComponent(panel_6, GroupLayout.PREFERRED_SIZE, 342, GroupLayout.PREFERRED_SIZE)
+					.addPreferredGap(ComponentPlacement.RELATED, 191, Short.MAX_VALUE)
+					.addComponent(btnConectar)
+					.addGap(20))
+		);
+		panel_6.setLayout(new BorderLayout(0, 0));
+		
+		textPaneServidor = new JTextPane();
+		panel_6.add(textPaneServidor, BorderLayout.CENTER);
+		panelServidor.setLayout(gl_panelServidor);
 
 		JPanel panelGlobal = new JPanel();
 		tabbedPane.addTab("Global", null, panelGlobal, null);

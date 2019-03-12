@@ -3,12 +3,14 @@
  */
 package common;
 
+import java.io.Serializable;
+
 /**
  * Creado el 11 mar. 2019
  * @author <a href="mailto:joaalsai@ieslavereda.es">Joaquin Vicente Alonso Saiz</a>
  *
  */
-public class Mensaje {
+public class Mensaje implements Serializable{
 	
 	public static final int SOLICITAR_DOWNLOAD_CONF=0;
 	public static final int SOLICITAR_UPLOAD_CONF=1;
