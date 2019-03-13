@@ -55,10 +55,11 @@ import java.awt.event.KeyEvent;
 /**
  * 
  * creado el 6 mar. 2019
+ * 
  * @author raul
  *
- *En el frame principal es donde se van a visualizar todos los cambios
- *del fichero dhcp
+ *         En el frame principal es donde se van a visualizar todos los cambios
+ *         del fichero dhcp
  */
 public class JFPrincipal extends JFrame {
 
@@ -75,18 +76,18 @@ public class JFPrincipal extends JFrame {
 	private JLabel lblHost;
 	private JFPrincipal framePrincipal;
 	private JTextPane textPaneServidor;
-	
 
 	/**
 	 * Lanzamos la aplicación
 	 */
 	/**
-	 * Se crea el frame principal desde el que podremos realizar casi todas las acciones
+	 * Se crea el frame principal desde el que podremos realizar casi todas las
+	 * acciones
 	 */
 	public JFPrincipal() {
-		this.configuracionGlobal="";
-		this.informacion="";
-		framePrincipal =this;
+		this.configuracionGlobal = "";
+		this.informacion = "";
+		framePrincipal = this;
 		ListaRedes = new Lista<Red>();
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setBounds(100, 100, 908, 674);
@@ -159,49 +160,40 @@ public class JFPrincipal extends JFrame {
 
 		JTabbedPane tabbedPane = new JTabbedPane(JTabbedPane.TOP);
 		contentPane.add(tabbedPane, BorderLayout.CENTER);
-		
+
 		JPanel panelServidor = new JPanel();
 		tabbedPane.addTab("Servidor", null, panelServidor, null);
-		
+
 		JPanel panel_6 = new JPanel();
-		
-		JButton btnConectar = new JButton("Conectar");
-		btnConectar.addActionListener(new ActionListener() {
+
+		JButton btnDownload = new JButton("Download dhcp.conf");
+		btnDownload.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
-				
-				try {
-					Mensaje mensaje = DHCPSocketClient.connect("10.0.3.1",2000,new Mensaje("Prueba",Mensaje.SOLICITAR_CIERRE));
-					textPaneServidor.setText(mensaje.getResumen());
-				} catch (IOException e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
-				}
-				
+				obtenerDHCP();
 			}
 		});
 		GroupLayout gl_panelServidor = new GroupLayout(panelServidor);
-		gl_panelServidor.setHorizontalGroup(
-			gl_panelServidor.createParallelGroup(Alignment.LEADING)
-				.addGroup(gl_panelServidor.createSequentialGroup()
-					.addContainerGap()
-					.addGroup(gl_panelServidor.createParallelGroup(Alignment.LEADING)
-						.addComponent(panel_6, GroupLayout.DEFAULT_SIZE, 867, Short.MAX_VALUE)
-						.addComponent(btnConectar, Alignment.TRAILING))
-					.addContainerGap())
-		);
-		gl_panelServidor.setVerticalGroup(
-			gl_panelServidor.createParallelGroup(Alignment.LEADING)
-				.addGroup(gl_panelServidor.createSequentialGroup()
-					.addContainerGap()
-					.addComponent(panel_6, GroupLayout.PREFERRED_SIZE, 342, GroupLayout.PREFERRED_SIZE)
-					.addPreferredGap(ComponentPlacement.RELATED, 191, Short.MAX_VALUE)
-					.addComponent(btnConectar)
-					.addGap(20))
-		);
+		gl_panelServidor
+				.setHorizontalGroup(gl_panelServidor.createParallelGroup(Alignment.LEADING).addGroup(Alignment.TRAILING,
+						gl_panelServidor.createSequentialGroup().addContainerGap()
+								.addGroup(gl_panelServidor
+										.createParallelGroup(Alignment.TRAILING).addComponent(panel_6,
+												Alignment.LEADING, GroupLayout.DEFAULT_SIZE, 867, Short.MAX_VALUE)
+										.addComponent(btnDownload))
+								.addContainerGap()));
+		gl_panelServidor
+				.setVerticalGroup(gl_panelServidor.createParallelGroup(Alignment.LEADING).addGroup(Alignment.TRAILING,
+						gl_panelServidor.createSequentialGroup().addContainerGap()
+								.addComponent(panel_6, GroupLayout.PREFERRED_SIZE, 403, GroupLayout.PREFERRED_SIZE)
+								.addPreferredGap(ComponentPlacement.RELATED, 130, Short.MAX_VALUE)
+								.addComponent(btnDownload).addGap(20)));
 		panel_6.setLayout(new BorderLayout(0, 0));
-		
+
+		JScrollPane scrollPane_4 = new JScrollPane();
+		panel_6.add(scrollPane_4, BorderLayout.CENTER);
+
 		textPaneServidor = new JTextPane();
-		panel_6.add(textPaneServidor, BorderLayout.CENTER);
+		scrollPane_4.setViewportView(textPaneServidor);
 		panelServidor.setLayout(gl_panelServidor);
 
 		JPanel panelGlobal = new JPanel();
@@ -214,7 +206,7 @@ public class JFPrincipal extends JFrame {
 
 		JLabel lblGlobal = new JLabel("Has realizado cambios, guarda antes de continuar o se perderán");
 		lblGlobal.setVisible(false);
-		
+
 		JScrollPane scrollPane = new JScrollPane();
 		panel.add(scrollPane, BorderLayout.CENTER);
 
@@ -222,68 +214,55 @@ public class JFPrincipal extends JFrame {
 		TPGlobal.addKeyListener(new KeyAdapter() {
 			@Override
 			public void keyTyped(KeyEvent e) {
-				
-				if(!TPGlobal.getText().equals(configuracionGlobal)) {
+
+				if (!TPGlobal.getText().equals(configuracionGlobal)) {
 					lblGlobal.setVisible(true);
 				} else {
 					lblGlobal.setVisible(false);
 				}
-					
+
 			}
 		});
 
-		
-		
 		scrollPane.setViewportView(TPGlobal);
-		
-	
-		
+
 		JPanel panel_1 = new JPanel();
 
 		JLabel lblInformacion = new JLabel("Informacion");
 
 		JPanel panel_5 = new JPanel();
-		
-		
+
 		GroupLayout gl_panelGlobal = new GroupLayout(panelGlobal);
-		gl_panelGlobal.setHorizontalGroup(
-			gl_panelGlobal.createParallelGroup(Alignment.LEADING)
-				.addGroup(gl_panelGlobal.createSequentialGroup()
-					.addContainerGap()
-					.addGroup(gl_panelGlobal.createParallelGroup(Alignment.TRAILING)
+		gl_panelGlobal.setHorizontalGroup(gl_panelGlobal.createParallelGroup(Alignment.LEADING)
+				.addGroup(gl_panelGlobal.createSequentialGroup().addContainerGap().addGroup(gl_panelGlobal
+						.createParallelGroup(
+								Alignment.TRAILING)
 						.addGroup(gl_panelGlobal.createSequentialGroup()
-							.addGroup(gl_panelGlobal.createParallelGroup(Alignment.LEADING)
-								.addComponent(panel, GroupLayout.DEFAULT_SIZE, 869, Short.MAX_VALUE)
-								.addComponent(lblInformacion))
-							.addContainerGap())
+								.addGroup(gl_panelGlobal.createParallelGroup(Alignment.LEADING)
+										.addComponent(panel, GroupLayout.DEFAULT_SIZE, 869, Short.MAX_VALUE)
+										.addComponent(lblInformacion))
+								.addContainerGap())
 						.addGroup(gl_panelGlobal.createSequentialGroup()
-							.addComponent(panel_1, GroupLayout.DEFAULT_SIZE, 869, Short.MAX_VALUE)
-							.addGap(12))
-						.addGroup(gl_panelGlobal.createSequentialGroup()
-							.addComponent(panel_5, GroupLayout.PREFERRED_SIZE, 228, GroupLayout.PREFERRED_SIZE)
-							.addContainerGap())
-						.addGroup(Alignment.LEADING, gl_panelGlobal.createSequentialGroup()
-							.addComponent(lblNewLabel)
-							.addPreferredGap(ComponentPlacement.RELATED, 149, Short.MAX_VALUE)
-							.addComponent(lblGlobal)
-							.addGap(122))))
-		);
-		gl_panelGlobal.setVerticalGroup(
-			gl_panelGlobal.createParallelGroup(Alignment.LEADING)
-				.addGroup(gl_panelGlobal.createSequentialGroup()
-					.addGap(9)
-					.addGroup(gl_panelGlobal.createParallelGroup(Alignment.BASELINE)
-						.addComponent(lblNewLabel)
-						.addComponent(lblGlobal))
-					.addPreferredGap(ComponentPlacement.UNRELATED)
-					.addComponent(panel, GroupLayout.PREFERRED_SIZE, 245, GroupLayout.PREFERRED_SIZE)
-					.addPreferredGap(ComponentPlacement.UNRELATED)
-					.addComponent(lblInformacion)
-					.addGap(9)
-					.addComponent(panel_1, GroupLayout.PREFERRED_SIZE, 207, GroupLayout.PREFERRED_SIZE)
-					.addPreferredGap(ComponentPlacement.RELATED, 28, Short.MAX_VALUE)
-					.addComponent(panel_5, GroupLayout.PREFERRED_SIZE, 36, GroupLayout.PREFERRED_SIZE))
-		);
+								.addComponent(panel_1, GroupLayout.DEFAULT_SIZE, 869, Short.MAX_VALUE).addGap(12))
+						.addGroup(
+								gl_panelGlobal.createSequentialGroup()
+										.addComponent(panel_5, GroupLayout.PREFERRED_SIZE, 228,
+												GroupLayout.PREFERRED_SIZE)
+										.addContainerGap())
+						.addGroup(Alignment.LEADING,
+								gl_panelGlobal.createSequentialGroup().addComponent(lblNewLabel)
+										.addPreferredGap(ComponentPlacement.RELATED, 149, Short.MAX_VALUE)
+										.addComponent(lblGlobal).addGap(122)))));
+		gl_panelGlobal.setVerticalGroup(gl_panelGlobal.createParallelGroup(Alignment.LEADING)
+				.addGroup(gl_panelGlobal.createSequentialGroup().addGap(9)
+						.addGroup(gl_panelGlobal.createParallelGroup(Alignment.BASELINE).addComponent(lblNewLabel)
+								.addComponent(lblGlobal))
+						.addPreferredGap(ComponentPlacement.UNRELATED)
+						.addComponent(panel, GroupLayout.PREFERRED_SIZE, 245, GroupLayout.PREFERRED_SIZE)
+						.addPreferredGap(ComponentPlacement.UNRELATED).addComponent(lblInformacion).addGap(9)
+						.addComponent(panel_1, GroupLayout.PREFERRED_SIZE, 207, GroupLayout.PREFERRED_SIZE)
+						.addPreferredGap(ComponentPlacement.RELATED, 28, Short.MAX_VALUE)
+						.addComponent(panel_5, GroupLayout.PREFERRED_SIZE, 36, GroupLayout.PREFERRED_SIZE)));
 		panel_5.setLayout(new FlowLayout(FlowLayout.CENTER, 5, 5));
 
 		JButton btnGuardar = new JButton("Guardar");
@@ -312,19 +291,17 @@ public class JFPrincipal extends JFrame {
 		TPInfo.addKeyListener(new KeyAdapter() {
 			@Override
 			public void keyTyped(KeyEvent e) {
-				if(!TPGlobal.getText().equals(configuracionGlobal) || !TPInfo.getText().equals(informacion)) {
+				if (!TPGlobal.getText().equals(configuracionGlobal) || !TPInfo.getText().equals(informacion)) {
 					lblGlobal.setVisible(true);
 				} else {
 					lblGlobal.setVisible(false);
 				}
-				
+
 			}
 		});
-		
-		
+
 		scrollPane_1.setViewportView(TPInfo);
 		panelGlobal.setLayout(gl_panelGlobal);
-		
 
 		JPanel panelRedes = new JPanel();
 		tabbedPane.addTab("Redes", null, panelRedes, null);
@@ -334,7 +311,7 @@ public class JFPrincipal extends JFrame {
 		JButton btnAdd = new JButton("Add");
 		btnAdd.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				JFRedes frame = new JFRedes(ListaRedes,framePrincipal);
+				JFRedes frame = new JFRedes(ListaRedes, framePrincipal);
 				frame.setVisible(true);
 				frame.desactivarSave();
 			}
@@ -344,7 +321,7 @@ public class JFPrincipal extends JFrame {
 		btnEdit.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				if (table_1.getSelectedRow() != -1) {
-					JFRedes frame = new JFRedes(ListaRedes,framePrincipal);
+					JFRedes frame = new JFRedes(ListaRedes, framePrincipal);
 					frame.setVisible(true);
 					frame.cargarRed(encontrarRed(table_1.getSelectedRow()));
 					frame.desactivarAdd();
@@ -366,7 +343,7 @@ public class JFPrincipal extends JFrame {
 		btnRefresh.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				actualizarCampos();
-				
+
 			}
 		});
 
@@ -374,7 +351,7 @@ public class JFPrincipal extends JFrame {
 		btnView_1.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				if (table_1.getSelectedRow() != -1) {
-					JFRedes frame = new JFRedes(ListaRedes,framePrincipal);
+					JFRedes frame = new JFRedes(ListaRedes, framePrincipal);
 					frame.setVisible(true);
 					frame.cargarRed(encontrarRed(table_1.getSelectedRow()));
 					frame.desactivarAdd();
@@ -441,12 +418,12 @@ public class JFPrincipal extends JFrame {
 		btnEditar.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				Red r2 = (Red) comboBox.getSelectedItem();
-				
-				JFHosts frame = new JFHosts(r2.getListaHosts(), r2,framePrincipal);
+
+				JFHosts frame = new JFHosts(r2.getListaHosts(), r2, framePrincipal);
 				frame.setVisible(true);
 				frame.cargarHost(encontrarHost(table.getSelectedRow(), r2));
 				frame.desactivarAdd();
-				
+
 			}
 		});
 
@@ -464,7 +441,7 @@ public class JFPrincipal extends JFrame {
 		btnAdd_1.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				Red r2 = (Red) comboBox.getSelectedItem();
-				JFHosts frame = new JFHosts(r2.getListaHosts(), r2,framePrincipal);
+				JFHosts frame = new JFHosts(r2.getListaHosts(), r2, framePrincipal);
 				frame.setVisible(true);
 				frame.desactivarSave();
 			}
@@ -474,7 +451,7 @@ public class JFPrincipal extends JFrame {
 		btnView.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				Red r2 = (Red) comboBox.getSelectedItem();
-				JFHosts frame = new JFHosts(r2.getListaHosts(), r2,framePrincipal);
+				JFHosts frame = new JFHosts(r2.getListaHosts(), r2, framePrincipal);
 				frame.setVisible(true);
 				frame.cargarHost(encontrarHost(table.getSelectedRow(), r2));
 				frame.desactivarAdd();
@@ -487,9 +464,9 @@ public class JFPrincipal extends JFrame {
 		btnIpsFree.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				Red r2 = (Red) comboBox.getSelectedItem();
-				JFListIp frame = new JFListIp(r2,framePrincipal);
+				JFListIp frame = new JFListIp(r2, framePrincipal);
 				frame.setVisible(true);
-				
+
 			}
 		});
 
@@ -546,13 +523,12 @@ public class JFPrincipal extends JFrame {
 		table = new JTable();
 		scrollPane_2.setViewportView(table);
 		panel_2.setLayout(gl_panel_2);
-		
+
 	}
 
-	
-	 // Este metodo se va a encargar de sacarnos una ventana del explorador
-	 // y delvolvernos el archivo que seleccionemos en dicha ventana
-	 // @return File		Fichero que se devolverá al seleccionarlo en el explorador
+	// Este metodo se va a encargar de sacarnos una ventana del explorador
+	// y delvolvernos el archivo que seleccionemos en dicha ventana
+	// @return File Fichero que se devolverá al seleccionarlo en el explorador
 	private File seleccionarArchivo() {
 		File file = null;
 		JFileChooser jfc = new JFileChooser();
@@ -566,12 +542,11 @@ public class JFPrincipal extends JFrame {
 		return file;
 	}
 
-	
-	 // En este método le pasamos un archivo y en este se creará un flujo
-	 // de lectura en el cual se irá repartiendo el contenido a las variables
-	 // correspondientes.
-	 // @param file		Fichero del cual se cargará la información
-	 
+	// En este método le pasamos un archivo y en este se creará un flujo
+	// de lectura en el cual se irá repartiendo el contenido a las variables
+	// correspondientes.
+	// @param file Fichero del cual se cargará la información
+
 	private void cargarDatosDesdeFichero(File file) {
 		BufferedReader is = null;
 		String linea = "";
@@ -637,8 +612,8 @@ public class JFPrincipal extends JFrame {
 	}
 
 	/**
-	 * Este metodo mostrará una ventana a través de la cual podremos guardar en un fichero
-	 * todos los cambios realizados en la aplicación
+	 * Este metodo mostrará una ventana a través de la cual podremos guardar en un
+	 * fichero todos los cambios realizados en la aplicación
 	 */
 	public void seleccionarArchivoGuardar() {
 		int opcion;
@@ -653,9 +628,10 @@ public class JFPrincipal extends JFrame {
 	}
 
 	/**
-	 * Pasandole un archivo, este metodo se va a encargar de guardar mediante un flujo de
-	 * escritura todos los datos que se hayan gestionado en la aplicación
-	 * @param file		fichero en el que se guardará la información
+	 * Pasandole un archivo, este metodo se va a encargar de guardar mediante un
+	 * flujo de escritura todos los datos que se hayan gestionado en la aplicación
+	 * 
+	 * @param file fichero en el que se guardará la información
 	 */
 	public void guardar(File file) {
 		PrintWriter oos = null;
@@ -671,10 +647,10 @@ public class JFPrincipal extends JFrame {
 		}
 	}
 
-	
-	//  Metodo que mediante el flujo carga la configuración global de un archivo en una variable
-	//  @param is		Flujo de datos
-	 
+	// Metodo que mediante el flujo carga la configuración global de un archivo en
+	// una variable
+	// @param is Flujo de datos
+
 	private void cargarConfiguracionGlobal(BufferedReader is) {
 		configuracionGlobal = "";
 		String linea;
@@ -694,9 +670,9 @@ public class JFPrincipal extends JFrame {
 
 	}
 
-
-	 // Metodo que mediante el flujo carga la información de un archivo dhcp.conf en una variable
-	 // @param is		Flujo de datos
+	// Metodo que mediante el flujo carga la información de un archivo dhcp.conf en
+	// una variable
+	// @param is Flujo de datos
 	private void cargarInformacion(BufferedReader is) {
 		informacion = "";
 		String linea;
@@ -715,10 +691,10 @@ public class JFPrincipal extends JFrame {
 		}
 	}
 
-	 // Metodo que mediante el flujo carga las redes de un archivo en un objeto red
-	 // y las va introduciendo dentro de una lista si cumplen con los requisitos.
-	 // @param is			flujo de datos
-	 // @param linea2		linea que se pasa para no perderla en la lectura del flujo
+	// Metodo que mediante el flujo carga las redes de un archivo en un objeto red
+	// y las va introduciendo dentro de una lista si cumplen con los requisitos.
+	// @param is flujo de datos
+	// @param linea2 linea que se pasa para no perderla en la lectura del flujo
 	private void cargarRedes(BufferedReader is, String linea2) {
 		String linea;
 		String[] campos;
@@ -825,23 +801,22 @@ public class JFPrincipal extends JFrame {
 		table_1.setModel(dtm);
 
 	}
-	
+
 	/**
-	 * Método que carga los cambios que se hayan realizado en las tablas de redes y host
-	 * y en el comboBox de host para que no haya selecciones vacías
+	 * Método que carga los cambios que se hayan realizado en las tablas de redes y
+	 * host y en el comboBox de host para que no haya selecciones vacías
 	 */
 	public void actualizarCampos() {
 
 		cargarRedesEnTabla();
 		cargarComboBox();
-		if (comboBox.getSelectedIndex()!= -1) {
+		if (comboBox.getSelectedIndex() != -1) {
 			cargarHostsTablas((Red) comboBox.getSelectedItem());
 		}
 	}
 
-	
 	// Carga el comboBox de una lista de redes
-	 
+
 	private void cargarComboBox() {
 		DefaultComboBoxModel dcbm = new DefaultComboBoxModel();
 		dcbm.removeAllElements();
@@ -856,11 +831,11 @@ public class JFPrincipal extends JFrame {
 		comboBox.setModel(dcbm);
 	}
 
-	
-	 // Metodo que mediante el flujo carga los hosts de un archivo
-	 // @param is 		flujo de lectura
-	 // @param linea2 	linea que le pasamos junto con el flujo para que no se pierda la información
-	 // @return Host		Host que devuelve con todos sus campos cargados
+	// Metodo que mediante el flujo carga los hosts de un archivo
+	// @param is flujo de lectura
+	// @param linea2 linea que le pasamos junto con el flujo para que no se pierda
+	// la información
+	// @return Host Host que devuelve con todos sus campos cargados
 	private Host cargarHosts(BufferedReader is, String linea2) {
 		String linea;
 		String[] campos;
@@ -918,10 +893,10 @@ public class JFPrincipal extends JFrame {
 	}
 
 	/**
-	 * Metodo que se encarga de cargar la lista de hosts en una tabla, se le pasa una red para
-	 * que pueda obtener la lista de hosts
+	 * Metodo que se encarga de cargar la lista de hosts en una tabla, se le pasa
+	 * una red para que pueda obtener la lista de hosts
 	 * 
-	 * @param r 		Red para obtener la lista de hosts
+	 * @param r Red para obtener la lista de hosts
 	 */
 	public void cargarHostsTablas(Red r) {
 		Lista<Host> LH = r.getListaHosts();
@@ -948,7 +923,7 @@ public class JFPrincipal extends JFrame {
 	 * Metodo que te devuelve una red mediante el paso de la posición que tenga la
 	 * misma en una tabla
 	 * 
-	 * @param posicion 		posición que ocupa en la tabla
+	 * @param posicion posición que ocupa en la tabla
 	 * @return
 	 */
 	public Red encontrarRed(int posicion) {
@@ -962,11 +937,11 @@ public class JFPrincipal extends JFrame {
 	}
 
 	/**
-	 * Metodo que te devuelve un host mediante el paso de la posicion en tabla y la 
+	 * Metodo que te devuelve un host mediante el paso de la posicion en tabla y la
 	 * red en la que esté ubicado el host
 	 * 
-	 * @param posicion 		posición que ocupa en la tabla
-	 * @param r 			red en la que está i
+	 * @param posicion posición que ocupa en la tabla
+	 * @param r        red en la que está i
 	 * @return
 	 */
 	public Host encontrarHost(int posicion, Red r) {
@@ -980,9 +955,10 @@ public class JFPrincipal extends JFrame {
 	}
 
 	/**
-	 * Metodo que se encarga de juntar todas las variables y objetos en un mismo string
-	 * para poder guardarlo en un fichero
-	 * @return				String ya relleno con los datos que se almacenaran en el fichero
+	 * Metodo que se encarga de juntar todas las variables y objetos en un mismo
+	 * string para poder guardarlo en un fichero
+	 * 
+	 * @return String ya relleno con los datos que se almacenaran en el fichero
 	 */
 	public String crearStringGuardar() {
 		String aux = "";
@@ -992,8 +968,10 @@ public class JFPrincipal extends JFrame {
 	}
 
 	/**
-	 * Método que irá rellenando el string de redes que se guardarán y hará un llamamiento
-	 * a otro método para que se rellene también el string  de hosts por cada red
+	 * Método que irá rellenando el string de redes que se guardarán y hará un
+	 * llamamiento a otro método para que se rellene también el string de hosts por
+	 * cada red
+	 * 
 	 * @return
 	 */
 	public String cargarStringRedes() {
@@ -1011,10 +989,32 @@ public class JFPrincipal extends JFrame {
 
 	}
 
+	private void obtenerDHCP() {
+
+		try {
+			Mensaje respuesta = DHCPSocketClient.connect("10.0.3.1", 2000,
+					new Mensaje("Solicitamos fichero dhcp", Mensaje.SOLICITAR_DOWNLOAD_CONF));
+			textPaneServidor.setText(respuesta.getResumen());
+
+			File f = new File("tmp.conf");
+			PrintWriter pw = new PrintWriter(new FileWriter(f));
+			pw.print(respuesta.getResumen());
+			cargarDatosDesdeFichero(f);
+			f.delete();
+			actualizarCampos();
+
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+
+	}
+
 	/**
 	 * Método que irá cargando el string de hosts para ser guardado
-	 * @param r			Red en la que esta situada la lista de hosts
-	 * @return			Devuelve el String con la lista de hosts de una red
+	 * 
+	 * @param r Red en la que esta situada la lista de hosts
+	 * @return Devuelve el String con la lista de hosts de una red
 	 */
 	public String cargarStringHosts(Red r) {
 		String aux = "";
