@@ -4,7 +4,9 @@
 package sockets;
 
 import java.io.BufferedReader;
+import java.io.BufferedWriter;
 import java.io.FileReader;
+import java.io.FileWriter;
 import java.io.IOException;
 
 import common.Mensaje;
@@ -32,14 +34,47 @@ public class GestionMensajes {
 			break;
 		case (Mensaje.SOLICITAR_DOWNLOAD_CONF):
 			String archivo = obtenerDatosDHCP();
+			//System.out.println(archivo);
 			mensajeRespuesta = new Mensaje(archivo, Mensaje.ENVIO_DHCP_CONF);
 			break;
 		case (Mensaje.ENVIO_DHCP_CONF):
+			System.out.println(mensajeEntrada.getResumen());
 			mensajeRespuesta = new Mensaje("Recibido datos Dhcp, solicitando cierre", Mensaje.SOLICITAR_CIERRE);
+			break;
+		case (Mensaje.SOLICITAR_UPLOAD_CONF):
+			String salida = grabarDHCP(mensajeEntrada.getResumen());
+			mensajeRespuesta = new Mensaje(salida, Mensaje.ENVIO_SALIDA_UPLOAD);
+			break;
+		case (Mensaje.ENVIO_SALIDA_UPLOAD):
+			mensajeRespuesta = new Mensaje("Recibido datos envio upload, solicitando cierre", Mensaje.SOLICITAR_CIERRE);
 			break;
 		}
 
 		return mensajeRespuesta;
+	}
+
+	private String grabarDHCP(String datos) {
+		String salida = "Todo OK.";
+
+		BufferedWriter out = null;
+
+		try {
+			out = new BufferedWriter(new FileWriter("/home/jalonso/dhcpd.conf.backup"));
+			out.write(datos);
+		} catch (Exception e) {
+			e.printStackTrace();
+			salida = e.toString();
+		} finally {
+			if (out != null)
+				try {
+					out.close();
+				} catch (IOException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+		}
+
+		return salida;
 	}
 
 	private String obtenerDatosDHCP() {

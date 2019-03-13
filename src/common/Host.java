@@ -99,12 +99,13 @@ public class Host {
 	
 	public String stringGuardarHost() {
 		String aux="";
+		System.out.println(aux);
 		aux += "# "+hostname.toLowerCase()+" ==>   ( )\n"
 				+"host "+hostname+" {\n"
 				+"fixed-address "+fixedAddress.getHostAddress()+";\n"
 				+"hardware ethernet "+hardwareEthernet+";\n"
 				+"option routers "+router.getHostAddress()+";\n"
-				+"option domain-name-servers "+dns[0].getHostAddress()+", "+dns[1].getHostAddress()+";\n"
+				+"option domain-name-servers "+ ((dns[0]!=null)?dns[0].getHostAddress():"")+", "+((dns[1]!=null)?dns[1].getHostAddress():"")+";\n"
 				+"# comentario "+ comentario+"\n"
 				+"}\n";
 		return aux;

@@ -172,21 +172,31 @@ public class JFPrincipal extends JFrame {
 				obtenerDHCP();
 			}
 		});
+
+		JButton btnUploadDhcpconf = new JButton("Upload dhcp.conf");
+		btnUploadDhcpconf.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
+				uploadDHCP();
+			}
+		});
 		GroupLayout gl_panelServidor = new GroupLayout(panelServidor);
+		gl_panelServidor.setHorizontalGroup(gl_panelServidor.createParallelGroup(Alignment.TRAILING)
+				.addGroup(gl_panelServidor.createSequentialGroup().addContainerGap().addGroup(gl_panelServidor
+						.createParallelGroup(Alignment.TRAILING)
+						.addComponent(panel_6, Alignment.LEADING, GroupLayout.DEFAULT_SIZE, 867, Short.MAX_VALUE)
+						.addGroup(gl_panelServidor.createSequentialGroup().addComponent(btnUploadDhcpconf)
+								.addPreferredGap(ComponentPlacement.UNRELATED).addComponent(btnDownload)))
+						.addContainerGap()));
 		gl_panelServidor
-				.setHorizontalGroup(gl_panelServidor.createParallelGroup(Alignment.LEADING).addGroup(Alignment.TRAILING,
-						gl_panelServidor.createSequentialGroup().addContainerGap()
-								.addGroup(gl_panelServidor
-										.createParallelGroup(Alignment.TRAILING).addComponent(panel_6,
-												Alignment.LEADING, GroupLayout.DEFAULT_SIZE, 867, Short.MAX_VALUE)
-										.addComponent(btnDownload))
-								.addContainerGap()));
-		gl_panelServidor
-				.setVerticalGroup(gl_panelServidor.createParallelGroup(Alignment.LEADING).addGroup(Alignment.TRAILING,
-						gl_panelServidor.createSequentialGroup().addContainerGap()
-								.addComponent(panel_6, GroupLayout.PREFERRED_SIZE, 403, GroupLayout.PREFERRED_SIZE)
-								.addPreferredGap(ComponentPlacement.RELATED, 130, Short.MAX_VALUE)
-								.addComponent(btnDownload).addGap(20)));
+				.setVerticalGroup(
+						gl_panelServidor.createParallelGroup(Alignment.TRAILING)
+								.addGroup(gl_panelServidor.createSequentialGroup().addContainerGap()
+										.addComponent(panel_6, GroupLayout.PREFERRED_SIZE, 403,
+												GroupLayout.PREFERRED_SIZE)
+										.addPreferredGap(ComponentPlacement.RELATED, 130, Short.MAX_VALUE)
+										.addGroup(gl_panelServidor.createParallelGroup(Alignment.BASELINE)
+												.addComponent(btnDownload).addComponent(btnUploadDhcpconf))
+										.addGap(20)));
 		panel_6.setLayout(new BorderLayout(0, 0));
 
 		JScrollPane scrollPane_4 = new JScrollPane();
@@ -1008,6 +1018,18 @@ public class JFPrincipal extends JFrame {
 			e.printStackTrace();
 		}
 
+	}
+
+	private void uploadDHCP() {
+		String datos = crearStringGuardar();
+		try {
+			Mensaje respuesta = DHCPSocketClient.connect("10.0.3.1", 2000,
+					new Mensaje(datos, Mensaje.SOLICITAR_UPLOAD_CONF));
+			textPaneServidor.setText(respuesta.getResumen());
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 	}
 
 	/**
